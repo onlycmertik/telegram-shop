@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<title>My Store</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080808;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+h1 {
+  font-size: 25px;
+}
+
+.balance {
+  background: #202020;
+  padding: 10px 14px;
+  border-radius: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.tab {
+  background: #222;
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.tab.active {
+  background: white;
+  color: black;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.card {
+  background: #171717;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.preview {
+  height: 140px;
+  background: #292929;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.info {
+  padding: 12px;
+}
+
+.info h3 {
+  font-size: 15px;
+  margin: 0 0 10px;
+}
+
+.price {
+  color: #ddd;
+  margin-bottom: 12px;
+}
+
+.buy {
+  width: 100%;
+  background: white;
+  color: black;
+  border: none;
+  padding: 11px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  color: #777;
+  margin-top: 35px;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>MY STORE</h1>
+  <div class="balance">⭐ Stars</div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('photo',this)">📸 Фото</button>
+  <button class="tab" onclick="show('video',this)">🎬 Видео</button>
+</div>
+
+<div class="grid" id="catalog"></div>
+
+<footer>
+  MY STORE • Telegram Shop
+</footer>
+
+<script>
+const products = [
+  {id:1,type:"photo",name:"Фото №1",price:10},
+  {id:2,type:"photo",name:"Фото №2",price:15},
+  {id:3,type:"video",name:"Видео №1",price:25},
+  {id:4,type:"video",name:"Видео №2",price:40}
+];
+
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+function show(type, button) {
+  document.querySelectorAll(".tab").forEach(b => {
+    b.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  const catalog = document.getElementById("catalog");
+  catalog.innerHTML = "";
+
+  products.filter(p => p.type === type).forEach(p => {
+    catalog.innerHTML += `
+      <div class="card">
+        <div class="preview">
+          ${type === "photo" ? "📷" : "▶️"}
+        </div>
+        <div class="info">
+          <h3>${p.name}</h3>
+          <div class="price">⭐ ${p.price}</div>
+          <button class="buy" onclick="buy(${p.id})">
+            Купить
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function buy(id) {
+  alert("Оплата Stars будет подключена на следующем этапе.");
+}
+
+show("photo", document.querySelector(".tab"));
+</script>
+
+</body>
+</html>
